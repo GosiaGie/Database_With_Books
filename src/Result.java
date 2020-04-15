@@ -35,10 +35,12 @@ public class Result extends HttpServlet {
             e.printStackTrace();
         }
 
-        for(String a: lista){
+        request.setAttribute("wynik", lista);
+        request.getRequestDispatcher("/wynik.jsp").forward(request,response);
+      /* for(String a: lista){
             printWriter.println(a);
         }
-
+*/
 
     }
 }

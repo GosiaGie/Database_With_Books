@@ -6,7 +6,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>  Wynik: <%=request.getAttribute("daneZSerwletu")
+        <h1>  Wynik: <%=request.getAttribute("wynik")
             %> </h1>
     </body>
 </html>

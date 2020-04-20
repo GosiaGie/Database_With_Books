@@ -26,8 +26,12 @@ public class Database {
         name = "'" + name + "'";
         ResultSet resultSet = statement.executeQuery("select * from books where last_name=" + name);
 
-      //  connection = null;
-       // if(connection==null) return "nie udalo się polaczyc";
+        connection = null;
+        if(connection==null)
+        {
+            wyniki.add("nie udalo sie polaczyc");
+            return wyniki;
+        }
 
 
 

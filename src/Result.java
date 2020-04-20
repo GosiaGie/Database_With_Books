@@ -21,13 +21,11 @@ public class Result extends HttpServlet {
 
         PrintWriter printWriter = response.getWriter();
         ArrayList<String> lista = new ArrayList<>();
-       // printWriter.println(name);
-
-
+        printWriter.println(name);
 
         try {
 
-          lista = Database.search(name);
+            lista = Database.search(name);
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -35,12 +33,10 @@ public class Result extends HttpServlet {
             e.printStackTrace();
         }
 
-        request.setAttribute("wynik", lista);
+
+        request.setAttribute("lista", lista);
         request.getRequestDispatcher("/wynik.jsp").forward(request,response);
-      /* for(String a: lista){
-            printWriter.println(a);
-        }
-*/
+
 
     }
 }

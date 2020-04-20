@@ -34,7 +34,6 @@ public class Database {
         }
 
 
-
         while (resultSet.next()){
 
           String result = resultSet.getString("title");
@@ -45,11 +44,6 @@ public class Database {
 
 return wyniki;
 
-
-
-
-
 }
-
 
 }

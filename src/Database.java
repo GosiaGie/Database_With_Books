@@ -15,7 +15,7 @@ public class Database {
 
         String url = "jdbc:mysql://localhost:3306/sakila?useSSL=false";
         String username = "root";
-        String password = "aplikacjaJava";
+        String password = "kochamJava";
 
         Class.forName("com.mysql.jdbc.Driver");
 

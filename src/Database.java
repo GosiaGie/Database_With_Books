@@ -15,7 +15,7 @@ public class Database {
 
         String url = "jdbc:mysql://localhost:3306/sakila?useSSL=false";
         String username = "root";
-        String password = "kochamJava";
+        String password = "aplikacjaJava";
 
         Class.forName("com.mysql.jdbc.Driver");
 
@@ -26,7 +26,6 @@ public class Database {
         name = "'" + name + "'";
         ResultSet resultSet = statement.executeQuery("select * from books where last_name=" + name);
 
-        connection = null;
         if(connection==null)
         {
             wyniki.add("nie udalo sie polaczyc");

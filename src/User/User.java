@@ -5,10 +5,6 @@ public class User {
     int id;
     String mail;
 
-    public User(){
-
-    }
-
     public User(int id, String mail){
         this.id = id;
         this.mail = mail;

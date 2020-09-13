@@ -9,9 +9,6 @@ public class Book {
     String price;
     String imagePath;
 
-    public Book( ){
-    }
-
     public Book(int id, String title, String first_name, String last_name, String price, String imagePath){
 
         this.id = id;

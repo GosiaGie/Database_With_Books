@@ -11,7 +11,6 @@
     <div style="text-align: center"><%=book.getTitle()%></div>
     <div style="text-align: center"><img src="<%=book.getImagePath()%>" width="400" height="500"></div>
     <input type="hidden" name ="id" value="<%=request.getAttribute("id")%>">
-
     <div style="text-align: center; height: 300px;"><input type="submit" name="return" value="przyjmij zwrot"></div>
 </form>
 </body>

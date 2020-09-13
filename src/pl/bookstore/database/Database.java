@@ -15,7 +15,7 @@ public class Database implements DatabaseDAO {
 
     public Connection getConnection() throws Exception {
 
-        String url = "jdbc:mysql://localhost:3306/sakila?useSSL=false";
+        String url = "jdbc:mysql://localhost:3306/sakila?allowPublicKeyRetrieval=true&useSSL=false";
         String username = "root";
         String password = "kochamJava";
         Class.forName("com.mysql.jdbc.Driver");
@@ -23,7 +23,7 @@ public class Database implements DatabaseDAO {
         Connection connection = DriverManager.getConnection(url, username, password);
 
         if (connection == null) {
-            throw new Exception("nie udal sie polaczyc");
+            throw new Exception("nie udalo sie polaczyc");
         } else {
             return connection;
         }
@@ -49,8 +49,7 @@ public class Database implements DatabaseDAO {
         } catch (NullPointerException e) {
             return false;
         }
-        System.out.println(mail);
-        System.out.println(pass);
+
 
         if (foundMail.equals(mail) && foundPass.equals(pass)) {
             System.out.println("true");

@@ -3,7 +3,6 @@ package pl.bookstore.database;
 import Books.Book;
 import User.User;
 
-import java.sql.*;
 import java.util.ArrayList;
 
 public interface DatabaseDAO {

@@ -23,9 +23,9 @@
     <img src="<%=book.getImagePath()%>" width="400" height="500">
     <p>Cena rynkowa: <%=book.getPrice()%> zł</p>
     <input type="hidden" name="book" value="<%=book.getId()%>">
-    <p><button type="submit" name="action" value="delete">USUŃ</button></p>
-    <p><button type="submit" name="action" value="changeImage">ZMIEŃ GRAFIKĘ</button> Podaj ścieżkę <input type="text" name="path"></p>
-    <p><button type="submit" name="action" value="changePrice">ZMIEŃ CENĘ RYNKOWĄ</button> Podaj nową cenę <input type="text" name="price"></p>
+    <p><button type="submit" name="action" value="1">USUŃ</button></p>
+    <p><button type="submit" name="action" value="2">ZMIEŃ GRAFIKĘ</button> Podaj ścieżkę <input type="text" name="path"></p>
+    <p><button type="submit" name="action" value="3">ZMIEŃ CENĘ RYNKOWĄ</button> Podaj nową cenę <input type="text" name="price"></p>
     <hr size="6" width="50%" align="left" color="blue">
     </form>
     <% } %>

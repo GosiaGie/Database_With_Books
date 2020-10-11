@@ -14,17 +14,19 @@ public class BookEditorAddBook extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+
         String title = request.getParameter("title");
         String first_name = request.getParameter("first_name");
         String last_name = request.getParameter("last_name");
         String page_number_string = request.getParameter("page_number");
         String price = request.getParameter("price");
         String image = request.getParameter("image");
+        String category = request.getParameter("category");
 
         if (title.length()==0 || first_name.length()==0 || last_name.length()==0|| page_number_string.length()==0
             ||price.length()==0 || image.length()==0){
 
-            request.setAttribute("mesaage", "brak danych");
+            request.setAttribute("message", "brak danych");
             request.getRequestDispatcher("/bookEditorAddBook.jsp").forward(request, response);
         }
 
@@ -34,10 +36,11 @@ public class BookEditorAddBook extends HttpServlet {
             DatabaseDAO databaseDAO = new ServicesDatabase();
 
             try {
-                databaseDAO.addBook(title, first_name, last_name, page_number, price, image);
+                databaseDAO.addBook(title, first_name, last_name, page_number, price, image, category);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
 
             request.getRequestDispatcher("bookEditorAddBook.jsp").forward(request, response);
         }

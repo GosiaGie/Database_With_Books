@@ -29,36 +29,38 @@ public class Database implements DatabaseDAO {
         }
     }
 
-    @Override
-    public boolean checkLogin(String mail, String pass) throws Exception {
 
+    @Override
+    public User checkLogin(String mail, String pass) throws Exception {
+
+        User user = new User();
         String foundMail = null;
         String foundPass = null;
+        int id = 0;
+        String role = null;
 
         Statement statement = getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery("select mail, pass from users_data where mail =" + addApo(mail) + "and pass =" + addApo(pass));
+        ResultSet resultSet = statement.executeQuery("select id, mail, pass, role from users_data where mail =" + addApo(mail) + "and pass =" + addApo(pass));
 
         while (resultSet.next()) {
             foundMail = resultSet.getString("mail");
             foundPass = resultSet.getString("pass");
-        }
-
-        try {
-            foundMail.equals(null);
-            foundPass.equals(null);
-        } catch (NullPointerException e) {
-            return false;
+            id = resultSet.getInt("id");
+            role = resultSet.getString("role");
         }
 
 
-        if (foundMail.equals(mail) && foundPass.equals(pass)) {
-            System.out.println("true");
-            return true;
+        if (foundMail == null && foundPass == null) {
+            return null;
         } else {
-            System.out.println("false");
-            return false;
+            user.setMail(mail);
+            user.setId(id);
+            user.setRole(role);
+            System.out.println(role);
+            return user;
         }
     }
+
 
 
     @Override
@@ -96,6 +98,7 @@ public class Database implements DatabaseDAO {
     }
 
 
+
     @Override
     public ArrayList<Book> findAllBooks() throws Exception {
 
@@ -106,7 +109,7 @@ public class Database implements DatabaseDAO {
         String result = null;
         Boolean found = false;
 
-        ResultSet resultSet = statement.executeQuery("select b.id, b.title, i.image_path, p.price from books b, images i, prices p where b.id = i.id and b.id = p.id and b.id not in (select id from borrowed_books)");
+        ResultSet resultSet = statement.executeQuery("select b.id, b.title, b.category, i.image_path, p.price from books b, images i, prices p where b.id = i.id and b.id = p.id and b.id not in (select id from borrowed_books)");
 
         while (resultSet.next()) {
             book = new Book();
@@ -114,6 +117,7 @@ public class Database implements DatabaseDAO {
             book.setTitle(resultSet.getString("b.title"));
             book.setImagePath(resultSet.getString("i.image_path"));
             book.setPrice(resultSet.getString("p.price"));
+            book.setCategory(resultSet.getString("b.category"));
             books.add(book);
         }
 
@@ -139,6 +143,8 @@ public class Database implements DatabaseDAO {
 
         return id;
     }
+
+
 
     @Override
     public Book findBookById(int id) throws Exception {
@@ -176,7 +182,6 @@ public class Database implements DatabaseDAO {
     public boolean checkUsersBooks(int id_user) throws Exception {
 
         Statement statement = getConnection().createStatement();
-
         int found_id = 0;
 
         ResultSet resultSet = statement.executeQuery("select id_user from borrowed_books where id_user =" + id_user);
@@ -192,26 +197,6 @@ public class Database implements DatabaseDAO {
         }
     }
 
-    @Override
-    public boolean checkAdminRole(String mail) throws Exception {
-
-        Statement statement = getConnection().createStatement();
-
-        mail = addApo(mail);
-        String foundMail = null;
-
-        ResultSet resultSet = statement.executeQuery("select role from users_data where mail=" + mail);
-
-        while (resultSet.next()) {
-            foundMail = resultSet.getString("role");
-        }
-
-        if (foundMail.equals("admin")) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     @Override
     public void removeBook(int id) throws Exception {
@@ -250,7 +235,19 @@ public class Database implements DatabaseDAO {
     }
 
     @Override
-    public String addBook(String title, String first_name, String last_name, int page_number, String price, String image) throws Exception {
+    public void changeCategory(int id, String category) throws Exception {
+
+        Statement statement = getConnection().createStatement();
+
+        category = addApo(category);
+
+        statement.executeUpdate("update books set category =" + category + "where id=" + id);
+
+    }
+
+
+    @Override
+    public String addBook(String title, String first_name, String last_name, int page_number, String price, String image, String category) throws Exception {
 
         Statement statement = getConnection().createStatement();
 
@@ -258,15 +255,16 @@ public class Database implements DatabaseDAO {
         first_name = addApo(first_name);
         last_name = addApo(last_name);
         image = addApo(image);
+        category = addApo(category);
 
         Character comma = ',';
         if (price.indexOf(',') != -1) {
             price = price.replace(',', '.');
         }
 
-        statement.executeUpdate("insert into books (first_name, last_name, title, page_number) values(" + first_name + "," + last_name + "," + title + "," + page_number + ")");
+        statement.executeUpdate("insert into books (first_name, last_name, title, page_number, category) values(" + first_name + "," + last_name + "," + title + "," + page_number + ","+category+ ")");
 
-        int id = 0; //id ostatniej ksiazki potrzebne do zapisu ceny i obrazka w oddzielnych tablicach
+        int id = 0; //szukamy id ostatniej ksiazki potrzebne do zapisu ceny i obrazka w oddzielnych tabelach
         ResultSet resultSet = statement.executeQuery("select id from books order by id desc limit 1");
 
         while (resultSet.next()) {
@@ -289,6 +287,7 @@ public class Database implements DatabaseDAO {
         return true;
     }
 
+
     @Override
     public ArrayList<User> findAllUsers() throws Exception {
 
@@ -310,11 +309,12 @@ public class Database implements DatabaseDAO {
 
     }
 
+
     @Override
     public Book getUsersBooks(int id) throws Exception {
 
         Statement statement = getConnection().createStatement();
-        ;
+
         Book book = null;
         ResultSet resultSet = statement.executeQuery("select b.id, b.title, b.first_name, b.last_name, i.image_path from books b, borrowed_books bb, images i where b.id = bb.id and i.id = b.id and bb.id_user = " + id);
 
@@ -340,6 +340,78 @@ public class Database implements DatabaseDAO {
         return true;
 
     }
+
+
+    @Override
+    public ArrayList<Book> findBooksByName(String name) throws Exception {
+
+        ArrayList<Book> books = new ArrayList();
+        Book book = null;
+        String result = null;
+        Boolean found = false;
+        String first_name = null;
+        String last_name = null;
+
+        Statement statement = getConnection().createStatement();
+        ResultSet resultSet;
+
+
+        if (!(name.indexOf(" ") == -1)) { //to oznacza imie i nazwisko
+
+            String[] first_name_last_name = name.split(" ");
+            first_name = addApo(first_name_last_name[0]);
+            last_name = addApo(first_name_last_name[1]);
+
+            resultSet = statement.executeQuery("select b.id, b.title, i.image_path, p.price from books b, images i, prices p where b.id = i.id and b.id = p.id and b.first_name ="+ first_name + "and b.last_name = "+ last_name);
+
+        } else { //szukamy po nazwisku
+            name = addApo(name);
+            resultSet = statement.executeQuery("select b.id, b.title, i.image_path, p.price from books b, images i, prices p where b.id = i.id and b.id = p.id and b.last_name = "+name);
+        }
+
+        while (resultSet.next()) {
+            book = new Book();
+            book.setId(Integer.parseInt(resultSet.getString("b.id")));
+            book.setTitle(resultSet.getString("b.title"));
+            book.setImagePath(resultSet.getString("i.image_path"));
+            book.setPrice(resultSet.getString("p.price"));
+            books.add(book);
+        }
+
+        return books;
+
+
+    }
+
+    @Override
+    public ArrayList<Book> findBooksByCategory(String category) throws Exception {
+
+        Statement statement = getConnection().createStatement();
+
+        ArrayList<Book> books = new ArrayList();
+        Book book = null;
+        String result = null;
+        Boolean found = false;
+        category = addApo(category);
+
+        ResultSet resultSet = statement.executeQuery("select b.id, b.title, i.image_path, p.price from books b, images i, prices p where b.category ="+ category + "and b.id = i.id and b.id = p.id and b.id not in (select id from borrowed_books)");
+
+        while (resultSet.next()) {
+            book = new Book();
+            book.setId(Integer.parseInt(resultSet.getString("b.id")));
+            book.setTitle(resultSet.getString("b.title"));
+            book.setImagePath(resultSet.getString("i.image_path"));
+            book.setPrice(resultSet.getString("p.price"));
+            books.add(book);
+        }
+
+        return books;
+
+    }
+
+
+
+
 
 
 }

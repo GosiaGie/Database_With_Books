@@ -14,7 +14,7 @@
         <%=request.getAttribute("message")%></p>
     <%}%>
     <p>mail: <input type="text" name="mail"></p>
-    <p>haslo: <input type="password" name="pass"></p>
+    <p>hasło: <input type="password" name="pass"></p>
     <p><input type="submit" value="zaloguj"></p>
     <p>${result_of_checking_account}</p>
     <tr>
@@ -23,6 +23,6 @@
 </form>
 <p>Korzystanie z naszej wypozyczalni wymaga akceptacji regulaminu:</p>
 <p>1. Możesz wypożyczyć tylko 1 książkę.</p>
-<p>2. Po zatwierdzeniu wyboru możesz ja od razu odebrac w godzinach pracy wypozyczalni</p>
+<p>2. Po zatwierdzeniu wyboru możesz ją od razu odebrać w godzinach pracy wypożyczalni</p>
 </body>
 </html>

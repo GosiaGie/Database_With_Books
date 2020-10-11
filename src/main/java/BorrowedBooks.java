@@ -1,5 +1,4 @@
 import Books.Book;
-import pl.bookstore.database.Database;
 import pl.bookstore.database.DatabaseDAO;
 import pl.bookstore.database.ServicesDatabase;
 
@@ -9,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 
 @WebServlet (urlPatterns = "/borrowedBooks")
 public class BorrowedBooks extends HttpServlet {
@@ -39,7 +37,7 @@ public class BorrowedBooks extends HttpServlet {
            request.getRequestDispatcher("borrowedBooks.jsp").forward(request,response);
         }
 
-        else { //jezeli ma ksiazke przekzuja do innego jsp i przekieruj admina do zarzadzania ksiazkami
+        else { //jezeli ma ksiazke przekaz ja do innego jsp i przekieruj admina do zarzadzania ksiazkami
             request.setAttribute("book", book);
             request.getRequestDispatcher("borrowedBooksManager.jsp").forward(request, response);
 

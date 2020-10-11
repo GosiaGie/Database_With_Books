@@ -23,5 +23,6 @@
     <%if (request.getAttribute("result") != null) {%>
     <%=request.getAttribute("result")%>
     <%}%>
+    <tr><td colspan="2"><a href="adminPanel.jsp">POWRÓT</a></td></tr>
     </body>
     </html>

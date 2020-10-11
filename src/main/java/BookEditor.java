@@ -21,7 +21,7 @@ public class BookEditor extends HttpServlet {
         DatabaseDAO databaseDAO = new ServicesDatabase();
 
         switch (action) {
-            case 1:
+            case 1://usuwanie
                 try {
                     databaseDAO.removeBook(id);
                 } catch (Exception e) {
@@ -32,7 +32,7 @@ public class BookEditor extends HttpServlet {
 
                 break;
 
-            case 2:
+            case 2://zmien grafike
                 String path = request.getParameter("path");
 
                 if (path.length() == 0) {
@@ -70,6 +70,22 @@ public class BookEditor extends HttpServlet {
 
                     break;
                 }
+
+            case 4:
+                String category = request.getParameter("category");
+
+                try {
+                    databaseDAO.changeCategory(id, category);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                request.setAttribute("message", "zmieniono gatunek");
+                request.getRequestDispatcher("/bookEditor.jsp").forward(request, response);
+
+                break;
+
+
         }
     }
 

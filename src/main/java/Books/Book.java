@@ -8,6 +8,7 @@ public class Book {
     String last_name;
     String price;
     String imagePath;
+    String category;
 
    /* public Book(int id, String title, String first_name, String last_name, String price, String imagePath){
 
@@ -54,6 +55,12 @@ public class Book {
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getCategory() {return category; }
 
 
 }

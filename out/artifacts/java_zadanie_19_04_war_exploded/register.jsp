@@ -9,9 +9,9 @@
         <%=request.getAttribute("message")%></p>
     <%}%>
 <p><input type="text" name="mail"> podaj mail</p>
-<p><input type="password" name="pass"> podaj haslo</p>
-<p><input type="password" name="pass_2"> powtorz haslo</p>
-<p><input type="submit" value="zarejestruj sie"></p>
+<p><input type="password" name="pass"> podaj hasło</p>
+<p><input type="password" name="pass_2"> powtórz hasło</p>
+<p><input type="submit" value="zarejestruj się"></p>
 </form>
 </body>
 </html>

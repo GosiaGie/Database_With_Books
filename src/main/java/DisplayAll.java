@@ -1,4 +1,5 @@
 import Books.Book;
+import User.User;
 import pl.bookstore.database.DatabaseDAO;
 import pl.bookstore.database.ServicesDatabase;
 
@@ -7,39 +8,52 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet (urlPatterns = "/displayAll")
+@WebServlet(urlPatterns = "/displayAll")
 
 public class DisplayAll extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        int id_of_chosed_book = Integer.parseInt(request.getParameter("book"));
-        String users_mail = request.getParameter("mail");
-        int users_id = 0;
+        HttpSession session = request.getSession();
+        DatabaseDAO databaseDAO = new ServicesDatabase();
+        User user = (User) session.getAttribute("user");
+
+
+        //checking that an user has unreturned book
+        try {
+            if (databaseDAO.checkUsersBooks(user.getId())) {
+                System.out.println(user.getId());
+                System.out.println("wykonuje sie");
+                Book borrowedBook = databaseDAO.getUsersBooks(user.getId());
+                request.setAttribute("borrowedBook", borrowedBook);
+                request.getRequestDispatcher("/borrowedBookDisplayer.jsp").forward(request, response);
+                return;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        System.out.println("kicha");
+        int chosedBookId = Integer.parseInt(request.getParameter("book"));
         Book chosedBook = null;
 
-        DatabaseDAO databaseDAO = new ServicesDatabase();
-
-
         try {
-            users_id = databaseDAO.findUserByMail(request.getParameter("mail"));
+            chosedBook = databaseDAO.findBookById(chosedBookId);
+            session.setAttribute("chosedBook", chosedBook);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        System.out.println(chosedBookId);
 
         try {
-            chosedBook = databaseDAO.findBookById(id_of_chosed_book);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        try {
-            databaseDAO.saveBorrowedBook(id_of_chosed_book, users_id);
+            databaseDAO.saveBorrowedBook(chosedBook.getId(), user.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -48,7 +62,13 @@ public class DisplayAll extends HttpServlet {
         request.getRequestDispatcher("/summary.jsp").forward(request, response);
 
 
+       /* try {
+            chosedBook = databaseDAO.findBookById(chosedBookId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+*/
 
 
     }

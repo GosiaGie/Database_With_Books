@@ -18,5 +18,6 @@
     <input type="submit" name="borrBook" value="przyjmij zwrot">
 </form>
 <%}%>
+<tr><td colspan="2"><a href="adminPanel.jsp">POWRÓT</a></td></tr>
 </body>
 </html>

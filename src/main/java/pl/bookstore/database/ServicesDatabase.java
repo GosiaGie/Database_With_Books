@@ -3,7 +3,6 @@ package pl.bookstore.database;
 import Books.Book;
 import User.User;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ServicesDatabase implements DatabaseDAO {
@@ -32,8 +31,8 @@ public class ServicesDatabase implements DatabaseDAO {
     }
 
     @Override
-    public String addBook(String title, String first_name, String last_name, int page_number, String price, String image) throws Exception {
-        return databaseDAO.addBook(title, first_name, last_name, page_number, price, image);
+    public String addBook(String title, String first_name, String last_name, int page_number, String price, String image, String category) throws Exception {
+        return databaseDAO.addBook(title, first_name, last_name, page_number, price, image, category);
     }
 
 
@@ -61,7 +60,7 @@ public class ServicesDatabase implements DatabaseDAO {
 
 
     @Override
-    public boolean checkLogin(String mail, String pass) throws Exception {
+    public User checkLogin(String mail, String pass) throws Exception {
         return databaseDAO.checkLogin(mail, pass);
     }
 
@@ -99,8 +98,19 @@ public class ServicesDatabase implements DatabaseDAO {
         return databaseDAO.checkUsersBooks(id_user);
     }
 
+
     @Override
-    public boolean checkAdminRole(String mail) throws Exception {
-        return databaseDAO.checkAdminRole(mail);
+    public ArrayList<Book> findBooksByCategory(String condition) throws Exception {
+        return databaseDAO.findBooksByCategory(condition);
+    }
+
+    @Override
+    public ArrayList<Book> findBooksByName(String name) throws Exception {
+        return databaseDAO.findBooksByName(name);
+    }
+
+    @Override
+    public void changeCategory(int id, String category) throws Exception {
+        databaseDAO.changeCategory(id, category);
     }
 }

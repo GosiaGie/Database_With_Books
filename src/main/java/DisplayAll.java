@@ -62,7 +62,6 @@ public class DisplayAll extends HttpServlet {
         request.getRequestDispatcher("/summary.jsp").forward(request, response);
 
 
-
     }
 }
 

@@ -39,7 +39,7 @@ public class DisplayAll extends HttpServlet {
         }
 
 
-        System.out.println("kicha");
+
         int chosedBookId = Integer.parseInt(request.getParameter("book"));
         Book chosedBook = null;
 

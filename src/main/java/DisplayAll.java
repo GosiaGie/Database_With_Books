@@ -62,14 +62,6 @@ public class DisplayAll extends HttpServlet {
         request.getRequestDispatcher("/summary.jsp").forward(request, response);
 
 
-       /* try {
-            chosedBook = databaseDAO.findBookById(chosedBookId);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-*/
-
 
     }
 }

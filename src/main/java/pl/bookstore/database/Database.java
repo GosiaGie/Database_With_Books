@@ -17,7 +17,7 @@ public class Database implements DatabaseDAO {
 
         String url = "jdbc:mysql://localhost:3306/sakila?allowPublicKeyRetrieval=true&useSSL=false";
         String username = "root";
-        String password = "kochamJava";
+        String password = "****";
         Class.forName("com.mysql.jdbc.Driver");
 
         Connection connection = DriverManager.getConnection(url, username, password);

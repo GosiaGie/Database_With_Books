@@ -13,6 +13,7 @@
 <%ArrayList<Book> books = databaseDAO.findAllBooks();%>
 <p>${message}</p>
 <div style="text-align: center;  background-color: pink;"><td colspan="2">WYSZUKIWARKA   <a href="search.jsp">KLIKNIJ TUTAJ</a></td></div>
+
 <%for (Book book : books) { %>
 <div style="text-align: center"><%=book.getTitle()%></div>
 <form action="displayAll" method="get">

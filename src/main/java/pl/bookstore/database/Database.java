@@ -17,7 +17,7 @@ public class Database implements DatabaseDAO {
 
         String url = "jdbc:mysql://localhost:3306/sakila?allowPublicKeyRetrieval=true&useSSL=false";
         String username = "root";
-        String password = "JavaRocks";
+        String password = "kochamJava";
         Class.forName("com.mysql.jdbc.Driver");
 
         Connection connection = DriverManager.getConnection(url, username, password);
@@ -39,8 +39,12 @@ public class Database implements DatabaseDAO {
         int id = 0;
         String role = null;
 
-        Statement statement = getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery("select id, mail, pass, role from users_data where mail =" + addApo(mail) + "and pass =" + addApo(pass));
+        PreparedStatement preparedStatement = getConnection().prepareStatement("select id, mail, pass, role from users_data where mail = ? and pass = ?");
+        preparedStatement.setString(1, mail);
+        preparedStatement.setString(2, pass);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+
 
         while (resultSet.next()) {
             foundMail = resultSet.getString("mail");
@@ -48,7 +52,6 @@ public class Database implements DatabaseDAO {
             id = resultSet.getInt("id");
             role = resultSet.getString("role");
         }
-
 
         if (foundMail == null && foundPass == null) {
             return null;
@@ -62,14 +65,15 @@ public class Database implements DatabaseDAO {
     }
 
 
-
     @Override
     public boolean findMail(String mail) throws Exception {
 
-        Statement statement = getConnection().createStatement();
         String result = null;
+        PreparedStatement preparedStatement = getConnection().prepareStatement("select mail from users_data where mail = ?");
 
-        ResultSet resultSet = statement.executeQuery("select mail from users_data where mail =" + mail);
+        preparedStatement.setString(1, mail);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
 
         while (resultSet.next()) {
             result = resultSet.getString("mail");
@@ -87,13 +91,15 @@ public class Database implements DatabaseDAO {
     @Override
     public void register(String mail, String pass) throws Exception {
 
-        Statement statement = getConnection().createStatement();
-        mail = addApo(mail);
-        pass = addApo(pass);
-        String role = addApo("user");
+        PreparedStatement preparedStatement = getConnection().prepareStatement("insert into users_data (mail, pass, role) values (?,?,?)");
 
+        String role = "user";
 
-        statement.executeUpdate("insert into users_data (mail, pass, role) values (" + mail + "," + pass + "," + role + ")");
+        preparedStatement.setString(1, mail);
+        preparedStatement.setString(2, pass);
+        preparedStatement.setString(3, role);
+
+        preparedStatement.executeUpdate();
 
     }
 
@@ -128,14 +134,14 @@ public class Database implements DatabaseDAO {
     @Override
     public int findUserByMail(String mail) throws Exception {
 
-        Statement statement = getConnection().createStatement();
+        PreparedStatement preparedStatement = getConnection().prepareStatement("select id from users_data where mail= ?");
 
-        mail = addApo(mail);
+        preparedStatement.setString(1, mail);
 
         int id = 0;
         Boolean found = false;
 
-        ResultSet resultSet = statement.executeQuery("select id from users_data where mail=" + mail);
+        ResultSet resultSet = preparedStatement.executeQuery();
 
         while (resultSet.next()) {
             id = Integer.parseInt(resultSet.getString("id"));
